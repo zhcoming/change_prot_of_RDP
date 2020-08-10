@@ -1,17 +1,17 @@
 ::@author Z-h-o(zhanghao)
 ::@email zhangha0@outlook.com
 ::@create date 2020-08-10 17:08:22
-::@modify date 2020-08-10 17:08:57
+::@modify date 2020-08-10 17:16:42
 ::@desc Change the port of RDP(Microsoft Remote Desktop service) 修改遠程桌面端口
 
 @ECHO OFF
 SETLOCAL EnableDelayedExpansion
 ::判斷是否以管理員權限執行
-rem >nul 2>&1 "%SYSTEMROOT%\system32\bcdedit.exe" "%SYSTEMROOT%\system32\config\system"
-rem if '%errorlevel%' NEQ '0' (goto UACPrompt) else (goto UACAdmin)
-rem :UACPrompt
-rem %1 mshta vbscript:CreateObject("Shell.Application").ShellExecute("cmd.exe","/c %~s0 ::","","runas",1)(window.close)&&exit
-rem :UACAdmin
+>nul 2>&1 "%SYSTEMROOT%\system32\bcdedit.exe" "%SYSTEMROOT%\system32\config\system"
+if '%errorlevel%' NEQ '0' (goto UACPrompt) else (goto UACAdmin)
+:UACPrompt
+%1 mshta vbscript:CreateObject("Shell.Application").ShellExecute("cmd.exe","/c %~s0 ::","","runas",1)(window.close)&&exit
+:UACAdmin
 
 echo ----------------------------------------
 :input
