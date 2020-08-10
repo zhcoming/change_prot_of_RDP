@@ -14,7 +14,7 @@ rem :UACAdmin
 
 echo ----------------------------------------
 :input
-set /p port_number=請輸入端口號(數字)：
+set /p port_number=請輸入端口號(數字1~65536)：
   :: ↓ 判斷輸入是否為數字
 echo %port_number%|findstr "^[0-9]*$" >nul && echo.>nul || goto input
   :: ↓ 判斷輸入是不是過大或過小
@@ -23,7 +23,7 @@ if %port_number% LSS 1 goto input
 set tpn=%port_number%
 set str=0123456789abcde
 
-::計算16進度值
+::計算16進制值
 :hex
 set /a m=!tpn!/16
 set /a n=!tpn!%%16
