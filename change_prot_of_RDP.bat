@@ -1,8 +1,9 @@
-::Change the port of RDP(Microsoft Remote Desktop service)
-::修改遠程桌面端口
-:: Author   Z-h-o(zhanghao)
-:: E-mail   zhangha0@outlook.com
-:: Date     2020-08-06
+::@author Z-h-o(zhanghao)
+::@email zhangha0@outlook.com
+::@create date 2020-08-10 17:08:22
+::@modify date 2020-08-10 17:08:57
+::@desc Change the port of RDP(Microsoft Remote Desktop service) 修改遠程桌面端口
+
 @ECHO OFF
 SETLOCAL EnableDelayedExpansion
 ::判斷是否以管理員權限執行
