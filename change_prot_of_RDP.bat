@@ -6,10 +6,12 @@
 
 @ECHO OFF
 SETLOCAL EnableDelayedExpansion
+title Change port of RDP v1.0 by Z-h-o
 ::判斷是否以管理員權限執行
 >nul 2>&1 "%SYSTEMROOT%\system32\bcdedit.exe" "%SYSTEMROOT%\system32\config\system"
 if '%errorlevel%' NEQ '0' (goto UACPrompt) else (goto UACAdmin)
 :UACPrompt
+echo 需要管理員權限...
 %1 mshta vbscript:CreateObject("Shell.Application").ShellExecute("cmd.exe","/c %~s0 ::","","runas",1)(window.close)&&exit
 :UACAdmin
 
