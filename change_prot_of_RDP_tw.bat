@@ -1,12 +1,13 @@
 ::@author Z-h-o(zhanghao)
 ::@email zhangha0@outlook.com
 ::@create date 2020-08-10 17:08:22
-::@modify date 2020-08-15 16:27:09
+::@modify date 2020-08-15 17:03:26
 ::@desc Change the port of RDP(Microsoft Remote Desktop service) 修改遠程桌面端口
 
 @ECHO OFF
+@mode con lines=25 cols=80
 SETLOCAL EnableDelayedExpansion
-title Change port of RDP v1.0 by Z-h-o
+title Change port of RDP v2.0 by Z-h-o
 ::判斷是否以管理員權限執行
 >nul 2>&1 "%SYSTEMROOT%\system32\bcdedit.exe" "%SYSTEMROOT%\system32\config\system"
 if '%errorlevel%' NEQ '0' (goto UACPrompt) else (goto UACAdmin)
@@ -41,11 +42,11 @@ set port_number_hex=0x!m!!h!
 echo.
 echo ------------------------變理注冊表中的端口號設置------------------------
 echo.
-if not exist %temp%\reg.exe (cp c:\Windows\System32\reg.exe "%temp%\reg.exe")
+if not exist "%temp%\reg.exe" (cp c:\Windows\System32\reg.exe "%temp%\reg.exe")
 set /p="設置注冊表項1/2:               " <nul
-%temp%\reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\Wds\rdpwd\Tds\tcp" /v PortNumber /t REG_DWORD /d %port_number_hex% /f >nul 2>&1 && (echo 成功) || (echo 失敗)
+"%temp%\reg.exe" add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\Wds\rdpwd\Tds\tcp" /v PortNumber /t REG_DWORD /d %port_number_hex% /f >nul 2>&1 && (echo 成功) || (echo 失敗)
 set /p="設置注冊表項2/2:               " <nul
-%temp%\reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v PortNumber /t REG_DWORD /d %port_number_hex% /f >nul 2>&1 && (echo 成功) || (echo 失敗)
+"%temp%\reg.exe" add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v PortNumber /t REG_DWORD /d %port_number_hex% /f >nul 2>&1 && (echo 成功) || (echo 失敗)
 ping 127.0.0.1 -n 1 >>nul 2>nul
 del %temp%\reg.exe
 
