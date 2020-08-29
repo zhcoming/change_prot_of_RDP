@@ -1,34 +1,34 @@
 ::@author Z-h-o(zhanghao)
 ::@email zhangha0@outlook.com
 ::@create date 2020-08-10 17:08:22
-::@modify date 2020-08-15 17:00:49
-::@desc Change the port of RDP(Microsoft Remote Desktop service) ä¿®æ”¹è¿œç¨‹æ¡Œé¢ç«¯å£
+::@modify date 2020-08-29 13:27:48
+::@desc Change the port of RDP(Microsoft Remote Desktop service) ĞŞ¸ÄÔ¶³Ì×ÀÃæ¶Ë¿Ú
 
 @ECHO OFF
 @mode con lines=25 cols=80
 SETLOCAL EnableDelayedExpansion
 title Change port of RDP v2.0 by Z-h-o
-::åˆ¤æ–­æ˜¯å¦ä»¥ç®¡ç†å‘˜æƒé™æ‰§è¡Œ
+::ÅĞ¶ÏÊÇ·ñÒÔ¹ÜÀíÔ±È¨ÏŞÖ´ĞĞ
 >nul 2>&1 "%SYSTEMROOT%\system32\bcdedit.exe" "%SYSTEMROOT%\system32\config\system"
 if '%errorlevel%' NEQ '0' (goto UACPrompt) else (goto UACAdmin)
 :UACPrompt
-echo éœ€è¦ç®¡ç†å‘˜æƒé™...
+echo ĞèÒª¹ÜÀíÔ±È¨ÏŞ...
 %1 mshta vbscript:CreateObject("Shell.Application").ShellExecute("cmd.exe","/c %~s0 ::","","runas",1)(window.close)&&exit
 :UACAdmin
 
-::æ¥å—ç”¨æˆ·è¾“å…¥
+::½ÓÊÜÓÃ»§ÊäÈë
 echo ----------------------------------------
 :input
-set /p port_number=è¯·è¾“å…¥ç«¯å£å·(æ•°å­—1~65536)ï¼š
-  :: â†“ åˆ¤æ–­è¾“å…¥æ˜¯å¦ä¸ºæ•°å­—
+set /p port_number=ÇëÊäÈë¶Ë¿ÚºÅ(Êı×Ö1~65536)£º
+  :: ¡ı ÅĞ¶ÏÊäÈëÊÇ·ñÎªÊı×Ö
 echo %port_number%|findstr "^[0-9]*$" >nul && echo.>nul || goto input
-  :: â†“ åˆ¤æ–­è¾“å…¥æ˜¯ä¸æ˜¯è¿‡å¤§æˆ–è¿‡å°
+  :: ¡ı ÅĞ¶ÏÊäÈëÊÇ²»ÊÇ¹ı´ó»ò¹ıĞ¡
 if %port_number% GTR 65536 goto input
 if %port_number% LSS 1 goto input
 set tpn=%port_number%
 set str=0123456789abcde
 
-::è®¡ç®—16è¿›åˆ¶å€¼
+::¼ÆËã16½øÖÆÖµ
 :hex
 set /a m=!tpn!/16
 set /a n=!tpn!%%16
@@ -38,47 +38,47 @@ if !m! geq 16 set tpn=!m! &goto hex
 set m=!str:~%m%,1!
 
 set port_number_hex=0x!m!!h!
-::å˜ç†æ³¨å†Œè¡¨ä¸­çš„ç«¯å£å·è®¾ç½®
+::±äÀí×¢²á±íÖĞµÄ¶Ë¿ÚºÅÉèÖÃ
 echo.
-echo ------------------------å˜ç†æ³¨å†Œè¡¨ä¸­çš„ç«¯å£å·è®¾ç½®------------------------
+echo ------------------------±äÀí×¢²á±íÖĞµÄ¶Ë¿ÚºÅÉèÖÃ------------------------
 echo.
-if not exist "%temp%\reg.exe" (cp c:\Windows\System32\reg.exe "%temp%\reg.exe")
-set /p="è®¾ç½®æ³¨å†Œè¡¨é¡¹1/2:               " <nul
-"%temp%\reg.exe" add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\Wds\rdpwd\Tds\tcp" /v PortNumber /t REG_DWORD /d %port_number_hex% /f >nul 2>&1 && (echo æˆåŠŸ) || (echo å¤±è´¥)
-set /p="è®¾ç½®æ³¨å†Œè¡¨é¡¹2/2:               " <nul
-"%temp%\reg.exe" add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v PortNumber /t REG_DWORD /d %port_number_hex% /f >nul 2>&1 && (echo æˆåŠŸ) || (echo å¤±è´¥)
+if not exist "%temp%\reg.exe" (copy c:\Windows\System32\reg.exe "%temp%\reg.exe" >nul)
+set /p="ÉèÖÃ×¢²á±íÏî1/2:               " <nul
+"%temp%\reg.exe" add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\Wds\rdpwd\Tds\tcp" /v PortNumber /t REG_DWORD /d %port_number_hex% /f >nul 2>&1 && (echo ³É¹¦) || (echo Ê§°Ü)
+set /p="ÉèÖÃ×¢²á±íÏî2/2:               " <nul
+"%temp%\reg.exe" add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v PortNumber /t REG_DWORD /d %port_number_hex% /f >nul 2>&1 && (echo ³É¹¦) || (echo Ê§°Ü)
 ping 127.0.0.1 -n 1 >>nul 2>nul
 del %temp%\reg.exe
 
-::æ›´æ–°é˜²ç«å¢™è®¾ç½®
+::¸üĞÂ·À»ğÇ½ÉèÖÃ
 echo.
-echo -----------------------------æ›´æ–°é˜²ç«å¢™è®¾ç½®-----------------------------
+echo -----------------------------¸üĞÂ·À»ğÇ½ÉèÖÃ-----------------------------
 echo.
 netsh advfirewall firewall show rule name="Remote Desktop Services - Custom" >nul 2>&1
 if %ErrorLevel%==0 goto update_firewall_rule
 
 :add_firewall_rule
-  set /p="é˜²ç«å¢™è§„åˆ™ä¸å­˜åœ¨ï¼Œæ–°å¢ä¸­       " <nul
-  netsh advfirewall firewall add rule name="Remote Desktop Services - Custom" dir=in action=allow localport=%port_number% protocol=tcp interfacetype=any >nul 2>&1 && (echo æˆåŠŸ) || (echo å¤±è´¥)
+  set /p="·À»ğÇ½¹æÔò²»´æÔÚ£¬ĞÂÔöÖĞ       " <nul
+  netsh advfirewall firewall add rule name="Remote Desktop Services - Custom" dir=in action=allow localport=%port_number% protocol=tcp interfacetype=any >nul 2>&1 && (echo ³É¹¦) || (echo Ê§°Ü)
   goto exit_firewall_set
 :update_firewall_rule
-  set /p="é˜²ç«å¢™è§„åˆ™å·²å­˜åœ¨ï¼Œæ›´æ–°ä¸­       " <nul
-  netsh advfirewall firewall set rule name="Remote Desktop Services - Custom" new dir=in action=allow localport=%port_number% protocol=tcp interfacetype=any >nul 2>&1 && (echo æˆåŠŸ) || (echo å¤±è´¥)
+  set /p="·À»ğÇ½¹æÔòÒÑ´æÔÚ£¬¸üĞÂÖĞ       " <nul
+  netsh advfirewall firewall set rule name="Remote Desktop Services - Custom" new dir=in action=allow localport=%port_number% protocol=tcp interfacetype=any >nul 2>&1 && (echo ³É¹¦) || (echo Ê§°Ü)
 :exit_firewall_set
 
-::é‡å¯è¿œç«¯æ¡Œé¢æœåŠ¡
+::ÖØÆôÔ¶¶Ë×ÀÃæ·şÎñ
 echo.
-echo ----------------------------é‡å¯è¿œç«¯æ¡Œé¢æœåŠ¡----------------------------
+echo ----------------------------ÖØÆôÔ¶¶Ë×ÀÃæ·şÎñ----------------------------
 echo.
-set /p="æ­£åœ¨åœæ­¢Remote Desktop Services UserMode Port RedirectoræœåŠ¡    " <nul
-sc stop UmRdpService >nul 2>&1 && (echo æˆåŠŸ) || (echo å¤±è´¥)
+set /p="ÕıÔÚÍ£Ö¹Remote Desktop Services UserMode Port Redirector·şÎñ    " <nul
+sc stop UmRdpService >nul 2>&1 && (echo ³É¹¦) || (echo Ê§°Ü)
 ping 127.0.0.1 -n 2 >>nul 2>nul
-set /p="æ­£åœ¨åœæ­¢Remote Desktop ServicesæœåŠ¡                             " <nul
-sc stop TermService >nul 2>&1 && (echo æˆåŠŸ) || (echo å¤±è´¥)
+set /p="ÕıÔÚÍ£Ö¹Remote Desktop Services·şÎñ                             " <nul
+sc stop TermService >nul 2>&1 && (echo ³É¹¦) || (echo Ê§°Ü)
 ping 127.0.0.1 -n 2 >>nul 2>nul
-set /p="æ­£åœ¨å¼€å¯Remote Desktop Services UserMode Port RedirectoræœåŠ¡    " <nul
-sc start TermService >nul 2>&1 && (echo æˆåŠŸ) || (echo å¤±è´¥)
-set /p="æ­£åœ¨å¼€å¯Remote Desktop ServicesæœåŠ¡                             " <nul
-sc start UmRdpService >nul 2>&1 && (echo æˆåŠŸ) || (echo å¤±è´¥)
+set /p="ÕıÔÚ¿ªÆôRemote Desktop Services UserMode Port Redirector·şÎñ    " <nul
+sc start TermService >nul 2>&1 && (echo ³É¹¦) || (echo Ê§°Ü)
+set /p="ÕıÔÚ¿ªÆôRemote Desktop Services·şÎñ                             " <nul
+sc start UmRdpService >nul 2>&1 && (echo ³É¹¦) || (echo Ê§°Ü)
 echo.
-set /p="ä½œä¸šå®Œæˆï¼Œè¯·æŒ‰[å›è½¦é”®]é€€å‡º..."
+set /p="×÷ÒµÍê³É£¬Çë°´[»Ø³µ¼ü]ÍË³ö..."
